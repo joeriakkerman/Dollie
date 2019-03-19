@@ -13,8 +13,10 @@
 
 Route::get('/', [
     'middleware' => ['auth'],
-    'uses' => "HomeController@show"]);
+    'uses' => "HomeController@index"]);
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/accounts', 'AccountsController@index')->name('accounts');
+
+Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
