@@ -8,7 +8,8 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    This will be the home page linked to your account
+                    This will be the home page linked to your account<br>
+                    Show all the dollies in this page
                 </div>
             </div>
         </div>
