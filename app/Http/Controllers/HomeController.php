@@ -9,3 +9,13 @@ class HomeController extends Controller
         return view('home');
     }
 }
+
+/*
+class PageController extends Controller
+{
+    public function page($pageName)
+    {
+        return view($pageName);
+    }
+}
+*/
