@@ -3,7 +3,6 @@
 
 
 @section('content')
-
 <div class="container">
 <table class="table">
 <tr>
@@ -11,8 +10,11 @@
 <th>Saldo</th>
 </tr>
 <tr>
-<td>NL58RABO2421442</td>
-<td>15MILJOEN EUROS</td>
+@foreach($bankAccounts as $accounts)
+<td>{{$accounts->account_number}}</td>
+<td>{{$accounts->balance}}</td>
+<!-- <td>{{$accounts->balance}}</td> -->
+@endforeach
 </tr>
 </table>
 </div>
