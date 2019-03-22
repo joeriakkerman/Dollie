@@ -14,8 +14,8 @@ class CreateBankaccountTable extends Migration
     public function up()
     {
         Schema::create('bankaccount', function (Blueprint $table) {
-            $table->bigIncrements('user_id')->unsigned();           
-            $table->string('account_number');
+            $table->string('account_number')->primary();
+            $table->bigInteger('user_id')->unsigned();           
             $table->integer('balance');           
             $table->timestamps();
         });

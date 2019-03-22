@@ -19,6 +19,13 @@ Auth::routes();
 
 Route::get('/bankAccountsOverview', 'BankAccountController@index')->name('bankAccountsOverview');
 
+Route::post('/bankAccountsOverview', 'BankAccountController@create')->name('bankAccountsOverview');
+
+Route::delete('/bankAccountsOverview', 'BankAccountController@delete');
+
+// Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
+
+
 Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
 Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
