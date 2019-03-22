@@ -15,6 +15,7 @@ class CreateDolliesTable extends Migration
     {
         if(!Schema::hasTable('dollies')){
             Schema::create('dollies', function (Blueprint $table) {
+                $table->bigIncrements('id')->unsigned();
                 $table->bigInteger('user_id')->unsigned();
                 $table->string('name');
                 $table->string('description');
@@ -22,7 +23,6 @@ class CreateDolliesTable extends Migration
                 $table->string('currency');
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
-                $table->primary(['user_id', 'name']);
             });
         }
     }

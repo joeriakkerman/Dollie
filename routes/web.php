@@ -15,13 +15,14 @@ Route::get('/', [
     'middleware' => ['auth'],
     'uses' => "HomeController@index"])->name('index');
 
+Route::post('/', "HomeController@filter")->name('filter');
+
 Auth::routes();
-
-
-Route::get('/accounts', 'AccountsController@index')->name('accounts');
 
 Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
 Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
 Route::post('/savedollie', 'DolliesController@saveDollie')->name('newdollie.save');
+
+Route::get('/accounts', 'AccountsController@index')->name('accounts');

@@ -28,7 +28,12 @@ class DolliesController extends Controller
     }
 
     private function saveInDb($name, $desc, $currency, $amount){
-        $dollie = new Dollie(Auth::user()->id, $name, $desc, $currency, $amount);
+        $dollie = new Dollie;
+        $dollie->fill(['user_id' => Auth::user()->id,
+                    'name' => $name,
+                    'description' => $desc,
+                    'currency' => $currency,
+                    'amount' => $amount]);
         try{
             if(!$dollie->save()){
                 return "Could not save dollie in the database";  

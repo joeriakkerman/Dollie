@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Dollie;
 
 class User extends Authenticatable
 {
@@ -36,4 +39,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function dollies(){
+        return $this->hasMany("App\Dollie");
+        //return Dollie::where("user_id", "=", Auth::user()->id)->orderByRaw("created_at DESC")->get();
+    }
+
+    public function payments(){
+        return $this->hasMany("App\Payment", "payer_id");
+    }
+
+    public function getIncomingDollies(){
+        return DB::table("dollies")
+            ->leftJoin("payments", "dollies.id", "=", "payments.dollie_id")
+            ->where("payments.payer_id", "=", Auth::user()->id)
+            ->select("dollies.*")->get();
+    }
 }
