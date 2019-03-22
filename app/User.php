@@ -48,11 +48,4 @@ class User extends Authenticatable
     public function payments(){
         return $this->hasMany("App\Payment", "payer_id");
     }
-
-    public function getIncomingDollies(){
-        return DB::table("dollies")
-            ->leftJoin("payments", "dollies.id", "=", "payments.dollie_id")
-            ->where("payments.payer_id", "=", Auth::user()->id)
-            ->select("dollies.*")->get();
-    }
 }
