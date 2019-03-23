@@ -8,16 +8,33 @@ use Illuminate\Support\Facades\Auth;
 
 class BankAccountController extends Controller
 {
+
     public function index()
     {
         $bankAccounts = BankAccount ::whereUserId(Auth::id())->get();
         return view('bankAccountsOverview')->with('bankAccounts', $bankAccounts);
     }
 
+    private function encrypt($message){
+        $key = openssl_random_pseudo_bytes(18, $cstrong);
+        $cipher = "aes-128-gcm";
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        return openssl_encrypt($message, $cipher, $key, $options=0, $iv, $tag);
+    }
+
+    private function decrypt($ciphertext){
+        $cipher = "aes-128-gcm";
+        $ivlen  = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        return openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv, $tag);
+    }
+
     private function saveInDb($account){
         $bankAccount = new BankAccount;
+        
         $bankAccount->fill([
-                    'account_number' => $account,
+                    'account_number' => $this->encrypt($account),
                     'user_id' => Auth::user()->id,                   
                     'balance' => 100
                     ]);
