@@ -17,6 +17,8 @@ Route::get('/', [
 
 Route::post('/', "HomeController@filter")->name('filter');
 
+Route::post('/users', "HomeController@getUsers")->name('users');
+
 Auth::routes();
 
 Route::get('/newdollie', 'DolliesController@index')->name('newdollie');

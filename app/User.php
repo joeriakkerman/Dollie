@@ -42,10 +42,20 @@ class User extends Authenticatable
 
     public function dollies(){
         return $this->hasMany("App\Dollie");
-        //return Dollie::where("user_id", "=", Auth::user()->id)->orderByRaw("created_at DESC")->get();
     }
 
     public function payments(){
         return $this->hasMany("App\Payment", "payer_id");
+    }
+
+    public static function getUsers($filter){
+        if(strlen($filter) <= 0) return;
+        $f = "";
+        $arr = str_split($filter);
+        for($i = 0; $i < count($arr); $i++){
+            $f .= "%" . $arr[$i];
+        }
+        $f .= "%";
+        return User::where("name", "LIKE", $f)->get();
     }
 }

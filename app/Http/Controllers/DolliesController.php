@@ -17,13 +17,22 @@ class DolliesController extends Controller
         $desc = htmlspecialchars($req['description'], ENT_QUOTES, 'UTF-8');
         $currency = htmlspecialchars($req['currency'], ENT_QUOTES, 'UTF-8');
         $amount = htmlspecialchars($req['amount'], ENT_QUOTES, 'UTF-8');
-        if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount)){
-            if(is_numeric($amount) && $amount > 0)
-                return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount]);
-            else
-                return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'message' => "Amount should be a positive number"]);
+
+        if(!isset($req["payers"])) $req["payers"] = array();
+
+        if(isset($req['addpayer'])) $req["payers"][] = $req['addpayer'];
+
+        if(isset($req['deletepayer'])){
+            $pos = array_search($req['deletepayer'], $req["payers"]);
+            unset($req['payers'][$pos]);
+            return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'payers' => $req['payers']]);
+        }else if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount)){
+            if(is_numeric($amount) && $amount > 0){
+                return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'payers' => $req['payers']]);
+            }else
+                return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'payers' => $req['payers'], 'message' => "Amount should be a positive number"]);
         }else{
-            return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'message' => "You did not fill in all the required data!"]);
+            return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'payers' => $req['payers'], 'message' => "You did not fill in all the required data!"]);
         }
     }
 
@@ -51,7 +60,7 @@ class DolliesController extends Controller
         if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount)){
             $msg = $this->saveInDb($name, $desc, $currency, $amount);
             if(!isset($msg)){
-                return "<form id='redirect' action='/'></form> <script>document.getElementById('redirect').submit();</script>";
+                return redirect("/");
             }else{
                 return view('newdollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'error' => $msg]);
             }

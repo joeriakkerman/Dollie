@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dollie;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -23,8 +24,13 @@ class HomeController extends Controller
             if($payment->payer_id == Auth::user()->id)
                 $dollies[] = $payment->dollie;
         }
-        //$dollies = Auth::user()->getIncomingDollies();
         return view('home', ["dollies" => $dollies, "filter" => $req["filter"]]);
+    }
+
+    public function getUsers(Request $req){
+        Log::debug("getUsers -> " . $req["filter"]);
+        $users = User::getUsers($req["filter"]);
+        return $users;
     }
 }
 
