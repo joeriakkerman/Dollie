@@ -6,29 +6,32 @@ use App\Dollie;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
     public function index()
     {
         $dollies = Auth::user()->dollies;
-        return view('home', ["dollies" => $dollies, "filter" => "outgoing"]);
+        return view('home', ["dollies" => $dollies, "filter" => "outgoing", "search" => ""]);
     }
 
     public function filter(Request $req)
     {
-        $payments = Auth::user()->payments;
-        $dollies = array();
-        foreach($payments as $payment){
-            if($payment->payer_id == Auth::user()->id)
-                $dollies[] = $payment->dollie;
+        if($req['filter'] == "incoming"){
+            $payments = Auth::user()->payments;
+            $dollies = array();
+            foreach($payments as $payment){
+                if($payment->payer_id == Auth::user()->id){
+                    $dollies[] = $payment->dollie;
+                }
+            }
+        }else{
+            $dollies = Dollie::where("user_id", "=", Auth::user()->id)->get();
         }
-        return view('home', ["dollies" => $dollies, "filter" => $req["filter"]]);
+        return view('home', ["dollies" => $dollies, "filter" => $req["filter"], "search" => $req['search']]);
     }
 
     public function getUsers(Request $req){
-        Log::debug("getUsers -> " . $req["filter"]);
         $users = User::getUsers($req["filter"]);
         return $users;
     }

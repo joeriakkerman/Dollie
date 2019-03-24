@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Dollie extends Model
 {
@@ -12,5 +13,14 @@ class Dollie extends Model
 
     public function user(){
         return $this->belongsTo("App\User");
+    }
+
+    public function searchRelevant($search){
+        Log::debug("search relevance: " . strpos(strtolower($this->name), strtolower($search)));
+        if(strpos(strtolower($this->name), strtolower($search)) !== false) return true;
+        else if(strpos(strtolower($this->description), strtolower($search)) !== false) return true;
+        else if(strpos(strtolower($this->amount), strtolower($search)) !== false) return true;
+        else if(strpos(strtolower($this->user->name), strtolower($search)) !== false) return true;
+        else return false;
     }
 }

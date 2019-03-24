@@ -9,10 +9,10 @@
                 <div class="card-body">
                     <form id="filterform" action="/" method="POST">
                         @csrf
-                        <input type="text" name="search" hint="Filter">
+                        <input type="text" name="search" placeholder="Search" @if(!empty($search)) value="{{ $search }}" @endif>
                         <select name="filter" onchange="event.preventDefault(); document.getElementById('filterform').submit();">
-                            <option value="outgoing" @if($filter == "outgoing") {{ "selected" }} @endif>Outgoing</option>
-                            <option value="incoming" @if($filter == "incoming") {{ "selected" }} @endif>Incoming</option>
+                            <option value="outgoing" @if($filter == "outgoing") selected @endif>Outgoing</option>
+                            <option value="incoming" @if($filter == "incoming") selected @endif>Incoming</option>
                         </select>
                     </form>
                     <table class="table">
@@ -27,6 +27,7 @@
                             <th>Created At</th>
                         </tr>
                         @foreach($dollies as $dollie)
+                        <?php if(empty($_POST["search"]) || (!empty($_POST['search']) && $dollie->searchRelevant($_POST["search"]))){?>
                             <tr>
                                 <td>{{ $dollie->name }}</td>
                                 <td>{{ $dollie->description }}</td>
@@ -37,6 +38,7 @@
                                 <td>{{ $dollie->amount }}</td>
                                 <td><?php $date = new DateTime($dollie->created_at); echo $date->format("d-m-Y"); ?></td>
                             </tr>
+                        <?php } ?>
                         @endforeach
                     </table>
                 </div>
