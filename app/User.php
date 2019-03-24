@@ -58,4 +58,10 @@ class User extends Authenticatable
         $f .= "%";
         return User::where("name", "LIKE", $f)->get();
     }
+
+    public static function getName($id){
+        $user = User::find($id);
+        if(!empty($user)) return $user->name;
+        else return "";
+    }
 }

@@ -8,6 +8,7 @@ class Payment extends Model
 {
     protected $table = 'payments';
     public $incrementing = false;
+    public $timestamps = false;
     protected $primaryKey = ['dollie_id', 'payer_id'];
     protected $fillable = ['dollie_id', 'payer_id', 'payed'];
 
