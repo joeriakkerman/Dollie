@@ -16,6 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigInteger('dollie_id')->unsigned();
             $table->bigInteger('payer_id')->unsigned();
+            $table->string('payment_id');
             $table->boolean('payed', false);
             $table->primary(['dollie_id', 'payer_id']);
             $table->foreign('dollie_id')->references('id')->on('dollies');

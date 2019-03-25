@@ -10,7 +10,7 @@ class Payment extends Model
     public $incrementing = false;
     public $timestamps = false;
     protected $primaryKey = ['dollie_id', 'payer_id'];
-    protected $fillable = ['dollie_id', 'payer_id', 'payed'];
+    protected $fillable = ['dollie_id', 'payer_id', 'payment_id', 'payed'];
 
     public function dollie(){
         return $this->belongsTo("App\Dollie");

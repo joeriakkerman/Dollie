@@ -19,6 +19,10 @@ Route::post('/', "HomeController@filter")->name('filter');
 
 Route::post('/users', "HomeController@getUsers")->name('users');
 
+Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
+
+Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
+
 Auth::routes();
 
 Route::get('/newdollie', 'DolliesController@index')->name('newdollie');

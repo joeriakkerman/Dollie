@@ -8,7 +8,7 @@
             Name: <input type="text" name="name"><br>
             Description: <input type="text" name="description"><br>
             Currency: <select name="currency">
-                <option value="euro">Euro</option>
+                <option value="EUR">Euro</option>
             </select><br>
             Amount: <input type="number" name="amount"><br>
             <input type="submit" name="submit" value="Submit">

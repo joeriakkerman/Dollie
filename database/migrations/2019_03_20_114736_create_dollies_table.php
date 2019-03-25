@@ -19,9 +19,11 @@ class CreateDolliesTable extends Migration
                 $table->bigInteger('user_id')->unsigned();
                 $table->string('name');
                 $table->string('description');
-                $table->integer('amount');
+                $table->decimal('amount', 5, 2);
                 $table->string('currency');
+                //$table->string('account_number');
                 $table->foreign('user_id')->references('id')->on('users');
+                //$table->foreign('account_number')->references('account_number')->on('bank_accounts');
                 $table->timestamps();
             });
         }

@@ -25,6 +25,9 @@
                             <th>Currency</th>
                             <th>Amount</th>
                             <th>Created At</th>
+                            @if($filter == "incoming")
+                                <th>Payed</th>
+                            @endif
                         </tr>
                         @foreach($dollies as $dollie)
                         <?php if(empty($_POST["search"]) || (!empty($_POST['search']) && $dollie->searchRelevant($_POST["search"]))){?>
@@ -37,6 +40,25 @@
                                 <td>{{ $dollie->currency }}</td>
                                 <td>{{ $dollie->amount }}</td>
                                 <td><?php $date = new DateTime($dollie->created_at); echo $date->format("d-m-Y"); ?></td>
+                                @if($filter == "incoming")
+                                    @foreach($dollie->payments as $payment)
+                                        @if($payment->payer_id == Illuminate\Support\Facades\Auth::user()->id)
+                                            @if($payment->payed)
+                                                <td>Payed</td>
+                                            @else
+                                                <td>
+                                                    <form method="POST" action="/payment">
+                                                        @csrf
+                                                        <input type="hidden" name="dollie_id" value="{{ $payment->dollie_id }}">
+                                                        <div class="form-group">
+                                                            <input type="submit" class="btn" value="Pay">
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
                             </tr>
                         <?php } ?>
                         @endforeach
