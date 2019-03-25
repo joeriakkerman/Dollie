@@ -18,8 +18,9 @@ class CreatePaymentsTable extends Migration
             $table->bigInteger('payer_id')->unsigned();
             $table->string('payment_id');
             $table->boolean('payed', false);
+            $table->timestamps();
             $table->primary(['dollie_id', 'payer_id']);
-            $table->foreign('dollie_id')->references('id')->on('dollies');
+            $table->foreign('dollie_id')->references('id')->on('dollies')->onDelete('cascade');
             $table->foreign('payer_id')->references('id')->on('users');
         });
     }

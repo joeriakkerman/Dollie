@@ -27,6 +27,8 @@
                             <th>Created At</th>
                             @if($filter == "incoming")
                                 <th>Payed</th>
+                            @else
+                                <th>Delete</th>
                             @endif
                         </tr>
                         @foreach($dollies as $dollie)
@@ -58,11 +60,24 @@
                                             @endif
                                         @endif
                                     @endforeach
+                                @else
+                                    <td>
+                                        <form method="POST" action="{{ route('dollie.delete') }}">
+                                            @csrf
+                                            <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
+                                            <div class="form-group">
+                                                <input type="submit" class="btn btn-danger delete-account" value="Delete">
+                                            </div>
+                                        </form>
+                                    </td>
                                 @endif
                             </tr>
                         <?php } ?>
                         @endforeach
                     </table>
+                    @if($errors->any())
+                        {{$errors->first()}}
+                    @endif
                 </div>
             </div>
         </div>
