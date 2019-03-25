@@ -60,7 +60,7 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('accounts') }}">
+                                    <a class="dropdown-item" href="{{ route('bankAccountsOverview') }}">
                                         Billing accounts
                                     </a>
                                     <a class="dropdown-item" href="{{ route('newdollie') }}">
