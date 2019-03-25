@@ -13,17 +13,20 @@ class CreateDolliesTable extends Migration
      */
     public function up()
     {
-        Schema::create('dollies', function (Blueprint $table) {
-            $table->bigIncrements('user_id');
-            $table->string('name');
-            $table->string('description');
-            $table->integer('amount');
-            $table->string('currency');
-            $table->primary('user_id');
-            $table->primary('name');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('dollies')){
+            Schema::create('dollies', function (Blueprint $table) {
+                $table->bigIncrements('id')->unsigned();
+                $table->bigInteger('user_id')->unsigned();
+                $table->string('name');
+                $table->string('description');
+                $table->decimal('amount', 5, 2);
+                $table->string('currency');
+                //$table->string('account_number');
+                $table->foreign('user_id')->references('id')->on('users');
+                //$table->foreign('account_number')->references('account_number')->on('bank_accounts');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
