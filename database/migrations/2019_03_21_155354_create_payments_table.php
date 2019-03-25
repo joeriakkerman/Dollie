@@ -16,7 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigInteger('dollie_id')->unsigned();
             $table->bigInteger('payer_id')->unsigned();
-            $table->string('payment_id');
+            $table->string('payment_id')->nullable();
             $table->boolean('payed', false);
             $table->timestamps();
             $table->primary(['dollie_id', 'payer_id']);
