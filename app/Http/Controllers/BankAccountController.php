@@ -34,7 +34,7 @@ class BankAccountController extends Controller
         $bankAccount = new BankAccount;
         
         $bankAccount->fill([
-                    'account_number' => $this->encrypt($account),
+                    'account_number' => $account,
                     'user_id' => Auth::user()->id,                   
                     'balance' => 100
                     ]);
