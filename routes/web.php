@@ -13,14 +13,22 @@
 
 Route::get('/', [
     'middleware' => ['auth'],
-    'uses' => "HomeController@index"]);
+    'uses' => "HomeController@index"])->name('index');
+
+Route::post('/', "HomeController@filter")->name('filter');
+
+Route::post('/users', "HomeController@getUsers")->name('users');
+
+Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
+
+Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
 
 Auth::routes();
-
-Route::get('/accounts', 'AccountsController@index')->name('accounts');
 
 Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
 Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
-Route::post('/newdollie', 'DolliesController@saveDollie')->name('newdollie.save');
+Route::post('/savedollie', 'DolliesController@saveDollie')->name('newdollie.save');
+
+Route::get('/accounts', 'AccountsController@index')->name('accounts');
