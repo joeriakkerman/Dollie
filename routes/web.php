@@ -39,9 +39,10 @@ Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
 Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
-Route::post('/newdollie', 'DolliesController@saveDollie')->name('newdollie.save');
+// Route::post('/newdollie', 'DolliesController@saveDollie')->name('newdollie.save');
 
 Route::resource('bankAccounts', 'BankAccountController');
+
 Route::post('/savedollie', 'DolliesController@saveDollie')->name('newdollie.save');
 
 Route::get('/accounts', 'AccountsController@index')->name('accounts');
