@@ -16,7 +16,7 @@ class CreateBankaccountTable extends Migration
         Schema::create('bankaccount', function (Blueprint $table) {
             $table->string('account_number')->primary();
             $table->bigInteger('user_id')->unsigned();           
-            $table->integer('balance');           
+            $table->decimal('balance', 5, 2);           
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });

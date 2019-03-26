@@ -34,7 +34,7 @@ class DolliesController extends Controller
             $pos = array_search($req['deletepayer'], $payers);
             unset($payers[$pos]);
             return view('verifydollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'account_number' => $account_number, 'payers' => $payers]);
-        }else if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount)){
+        }else if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount) && !empty($account_number)){
             if(is_numeric($amount) && $amount > 0){
                 return view('verifydollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'account_number' => $account_number, 'payers' => $payers]);
             }else{
