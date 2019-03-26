@@ -11,6 +11,12 @@
                 <option value="EUR">Euro</option>
             </select><br>
             Amount: <input type="number" name="amount"><br>
+            Bank Account:
+            <select name="account_number">
+            @foreach($bankaccounts as $bankaccount)
+                <option value="{{ $bankaccount->account_number }}">{{ $bankaccount->account_number }}</option>;
+            @endforeach
+            </select>
             <input type="submit" name="submit" value="Submit">
         </form>
 

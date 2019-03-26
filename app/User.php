@@ -48,6 +48,10 @@ class User extends Authenticatable
         return $this->hasMany("App\Payment", "payer_id");
     }
 
+    public function bank_accounts(){
+        return $this->hasMany("App\BankAccount");
+    }
+
     public static function getUsers($filter){
         if(strlen($filter) <= 0) return;
         $f = "";
@@ -56,7 +60,7 @@ class User extends Authenticatable
             $f .= "%" . $arr[$i];
         }
         $f .= "%";
-        return User::where("name", "LIKE", $f)->get();
+        return User::where("name", "LIKE", $f)->where("id", "<>", Auth::user()->id)->get();
     }
 
     public static function getName($id){

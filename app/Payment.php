@@ -12,7 +12,7 @@ class Payment extends Model
     protected $fillable = ['dollie_id', 'payer_id', 'payment_id', 'payed'];
 
     public function dollie(){
-        return $this->belongsTo("App\Dollie");
+        return $this->belongsTo("App\Dollie", "dollie_id");
     }
 
     public function payer(){

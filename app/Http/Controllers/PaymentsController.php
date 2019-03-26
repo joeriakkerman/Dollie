@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Dollie;
 use App\Payment;
+use App\BankAccount;
 
 class PaymentsController extends Controller
 {
@@ -39,8 +40,8 @@ class PaymentsController extends Controller
         $payment = Mollie::api()->payments()->get($req['id']);
         if ($payment->isPaid()){
             Payment::where("payment_id", "=", $req['id'])->update(['payed' => 1]);
-            //add balance to bankaccount from receiver
-            //remove balance from payer bankaccount
+            $p = Payment::where("payment_id", "=", $req['id'])->first();
+            $p->dollie->bankaccount->update(['balance' => $p->dollie->bankaccount->balance + $p->dollie->amount]);
         }
         return "Payment received.";
     }
