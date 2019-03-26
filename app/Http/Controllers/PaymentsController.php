@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Dollie;
 use App\Payment;
+use App\BankAccount;
+
+use danielme85\CConverter\Currency;
 
 class PaymentsController extends Controller
 {
@@ -39,8 +42,14 @@ class PaymentsController extends Controller
         $payment = Mollie::api()->payments()->get($req['id']);
         if ($payment->isPaid()){
             Payment::where("payment_id", "=", $req['id'])->update(['payed' => 1]);
-            //add balance to bankaccount from receiver
-            //remove balance from payer bankaccount
+            $p = Payment::where("payment_id", "=", $req['id'])->first();
+            $amount = $p->dollie->amount;
+            if($p->dollie->currency != "EUR"){
+                $currency = new Currency(null, null, false, null, true);
+                $amount = $currency->convert($p->dollie->currency, 'EUR', $amount);
+                Log::debug("Calculated amount: " . $amount);
+            }
+            $p->dollie->bankaccount->update(['balance' => $p->dollie->bankaccount->balance + $amount]);
         }
         return "Payment received.";
     }

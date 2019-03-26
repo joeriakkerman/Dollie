@@ -37,7 +37,7 @@
 @csrf
 <br>
   <h4>Add new bankaccount</h2>
-  <input type="text" size="30" style="color: #d4cfcd" name=" firstname" value="Voorbeeld: NL65RABO0844637524">
+  <input type="text" size="30" style="color: #d4cfcd" name=" firstname" placeholder="Voorbeeld: NL65RABO0844637524">
   <br>
   @if ($errors->any())
   {{ implode('', $errors->all(':message')) }}

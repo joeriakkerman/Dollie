@@ -21,9 +21,9 @@ class CreateDolliesTable extends Migration
                 $table->string('description');
                 $table->decimal('amount', 5, 2);
                 $table->string('currency');
-                //$table->string('account_number');
+                $table->string('account_number');
                 $table->foreign('user_id')->references('id')->on('users');
-                //$table->foreign('account_number')->references('account_number')->on('bank_accounts');
+                $table->foreign('account_number')->references('account_number')->on('bankaccount');
                 $table->timestamps();
             });
         }

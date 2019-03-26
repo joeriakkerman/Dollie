@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Dollie;
+use App\Payment;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -39,7 +39,6 @@ class HomeController extends Controller
 
     public function deleteDollie(Request $req){
         $dollie = Dollie::find($req['dollie_id']);
-        Log::debug("dollie " . $dollie);
         foreach($dollie->payments as $payment){
             if($payment->payed){
                 return redirect()->back()->withErrors("This dollie already has been payed by someone so you can't delete it!");
