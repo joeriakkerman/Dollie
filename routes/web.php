@@ -43,7 +43,15 @@ Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
 Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
-// Route::post('/newdollie', 'DolliesController@saveDollie')->name('newdollie.save');
+Route::post('/getgroups', 'GroupController@getGroups')->name('getgroups');
+
+Route::get('/groups', 'GroupController@index')->name('groups');
+
+Route::post('/groups', 'GroupController@add')->name('addgroup');
+
+Route::post('/deletegroup', 'GroupController@delete')->name('group.delete');
+
+Route::post('/addmember', 'GroupController@addMember')->name('group.addmember');
 
 Route::resource('bankAccounts', 'BankAccountController');
 

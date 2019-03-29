@@ -52,6 +52,10 @@ class User extends Authenticatable
         return $this->hasMany("App\BankAccount");
     }
 
+    public function groups(){
+        return $this->hasMany("App\Group");
+    }
+
     public static function getUsers($filter){
         if(strlen($filter) <= 0) return;
         $f = "";

@@ -33,8 +33,7 @@ class HomeController extends Controller
     }
 
     public function getUsers(Request $req){
-        $users = User::getUsers($req["filter"]);
-        return $users;
+        return User::getUsers($req["filter"]);
     }
 
     public function deleteDollie(Request $req){

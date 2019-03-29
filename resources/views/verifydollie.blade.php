@@ -48,6 +48,8 @@
 
                     <script>
                         function myFunction(){
+                            var found = 0;
+                            var done = 0;
                             $(document).ready(function(){
                                 $.ajax({
                                     type: 'POST',
@@ -60,22 +62,68 @@
                                     },
 
                                     success: function (data) {
+                                        done++;
                                         $(".user").remove();
                                         var o = JSON.parse(data);
-                                        if(o.length <= 0){
-                                            $("#errorMessage").html("Could not find users with a name like this...");
-                                        }else{
-                                            $("#errorMessage").html("");
+                                        if(o.length > 0){
+                                            found = 1;
+                                        }
+                                        
+                                        if(done == 2){
+                                            if(found == 1) $("#errorMessage").html("");
+                                            else $("#errorMessage").html("Could not find users/groups with a name like this...");
                                         }
                                         var dd = document.getElementById("userDropdown");
                                         for(var i = 0; i < o.length; i++){
                                             dd.innerHTML += '<form class="user" method="POST" action="/newdollie"> @csrf <input type="hidden" name="name" value="{{ $name }}"> <input type="hidden" name="description" value="{{ $description }}"> <input type="hidden" name="currency" value="{{ $currency }}"> <input type="hidden" name="amount" value="{{ $amount }}"> <input type="hidden" name="account_number" value="{{ $account_number }}"> <input type="hidden" name="payers" value="{{ json_encode($payers) }}"> <input type="hidden" name="addpayer" value="' + o[i].id + '"> <input type="submit" value="' + o[i].name + '"> </form>';
                                         }
                                     },
-                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                        $("#errorMessage").html("Could not find users with a name like this...");
+                                    error: function(xhr, errDesc, exception) {
+                                        done++;
+                                        if(done == 2){
+                                            if(found == 1) $("#errorMessage").html("");
+                                            else $("#errorMessage").html("Could not find users/groups with a name like this...");
+                                        }
                                     }
                                 });
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ route('getgroups') }}",
+                                    dataType: 'text',
+                                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                                    data: {
+                                        'filter': $("#findUser").val(),
+                                        '_token': "{{ csrf_token() }}"
+                                    },
+
+                                    success: function (data) {
+                                        done++;
+                                        $(".group").remove();
+                                        var o = JSON.parse(data);
+                                        if(o.length > 0){
+                                            found = 1;
+                                        }
+                                        
+                                        if(done == 2){
+                                            if(found == 1) $("#errorMessage").html("");
+                                            else $("#errorMessage").html("Could not find users/groups with a name like this...");
+                                        }
+                                        var dd = document.getElementById("userDropdown");
+                                        for(var i = 0; i < o.length; i++){
+                                            dd.innerHTML += '<form class="group" method="POST" action="/newdollie"> @csrf <input type="hidden" name="name" value="{{ $name }}"> <input type="hidden" name="description" value="{{ $description }}"> <input type="hidden" name="currency" value="{{ $currency }}"> <input type="hidden" name="amount" value="{{ $amount }}"> <input type="hidden" name="account_number" value="{{ $account_number }}"> <input type="hidden" name="payers" value="{{ json_encode($payers) }}"> <input type="hidden" name="addgroup" value="' + o[i].id + '"> <input type="submit" value="Group: ' + o[i].name + '"> </form>';
+                                        }
+                                    },
+                                    error: function(xhr, errDesc, exception) {
+                                        done++;
+                                        if(done == 2){
+                                            if(found == 1) $("#errorMessage").html("");
+                                            else $("#errorMessage").html("Could not find users/groups with a name like this...");
+                                        }
+                                    }
+                                });
+
+                                
                             });
                         }
                     </script>

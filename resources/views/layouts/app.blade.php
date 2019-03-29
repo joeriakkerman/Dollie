@@ -67,6 +67,9 @@
                                     <a class="dropdown-item" href="{{ route('newdollie') }}">
                                         New Dollie
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('groups') }}">
+                                        Groups
+                                    </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
