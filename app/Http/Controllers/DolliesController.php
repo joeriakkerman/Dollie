@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Dollie;
 use App\Payment;
+use App\Group;
+use App\GroupMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -28,6 +30,15 @@ class DolliesController extends Controller
 
         if(isset($req['addpayer'])){
             $payers[] = $req['addpayer'];
+        }
+
+        if(isset($req['addgroup'])){
+            $group = Group::find($req['addgroup']);
+            if(isset($group) && !empty($group)){
+                foreach($group->members as $member){
+                    $payers[] = $member->user->id;
+                }
+            }
         } 
 
         if(isset($req['deletepayer'])){
@@ -68,7 +79,7 @@ class DolliesController extends Controller
             }
         }catch(\Exception $e){
             Log::debug("Could not save dollie in the database, error message: " . $e->getMessage());
-            return "Could not save dollie in the database... Please try again! " . $e->getMessage();
+            return "Could not save dollie in the database... Please try again!";
         }
     }
 

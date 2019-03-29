@@ -14,7 +14,7 @@
                 <option value="CHF">Swiss franc</option>
                 <option value="CZK">Czech koruna</option>
                 <option value="DKK">Danish krone</option>
-                <option value="EUR">Euro</option>
+                <option value="EUR" selected>Euro</option>
                 <option value="GBP">British pound</option>
                 <option value="HKD">Hong Kong dollar</option>
                 <option value="HUF">Hungarian forint</option>
