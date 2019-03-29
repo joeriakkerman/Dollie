@@ -28,6 +28,7 @@
                             @if($filter == "incoming")
                                 <th>Payed</th>
                             @else
+                                <th>Copy Link</th>
                                 <th>Delete</th>
                             @endif
                         </tr>
@@ -61,6 +62,7 @@
                                         @endif
                                     @endforeach
                                 @else
+                                    <td><button class="btn" onclick="copyLink({{ $dollie->id }})">Copy</button></td>
                                     <td>
                                         <form method="POST" action="{{ route('dollie.delete') }}">
                                             @csrf
@@ -78,6 +80,20 @@
                     @if($errors->any())
                         {{$errors->first()}}
                     @endif
+
+                    <input type="hidden" value="none" id="myInput">
+
+                    <script>
+                        function copyLink(id){
+                            var tempInput = document.createElement("input");
+                            tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+                            tempInput.value = "dollie.local/payment/?dollie_id=" + id;
+                            document.body.appendChild(tempInput);
+                            tempInput.select();
+                            document.execCommand("copy");
+                            document.body.removeChild(tempInput);
+                        }
+                    </script>
                 </div>
             </div>
         </div>

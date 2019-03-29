@@ -31,6 +31,10 @@ Route::post('/deletedollie', "HomeController@deleteDollie")->name('dollie.delete
 
 Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
 
+Route::get('/payment', [
+    'middleware' => ['auth'],
+    'uses' => 'PaymentsController@link'])->name('payment.link');
+
 Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
 
 Auth::routes();
