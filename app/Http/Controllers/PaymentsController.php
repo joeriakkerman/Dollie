@@ -18,6 +18,23 @@ use danielme85\CConverter\Currency;
 class PaymentsController extends Controller
 {
 
+    public function link(Request $req){
+        if($this->isAllowed($req)){
+            return $this->prepare($req);
+        }
+        return "You are not linked to this dollie, so you are not able to pay this dollie... ";
+    }
+
+    private function isAllowed(Request $req){
+        $dollie = Dollie::find($req['dollie_id']);
+        if(!empty($dollie) && isset($dollie->name)){
+            foreach($dollie->payments as $payment){
+                if($payment->payer_id == Auth::user()->id) return true;
+            }
+        }
+        return false;
+    }
+
     public function prepare(Request $req){
         $dollie = Dollie::find($req['dollie_id']);
 
