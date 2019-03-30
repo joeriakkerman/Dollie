@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\BankAccount;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class BankAccountController extends Controller
 {
@@ -15,24 +16,10 @@ class BankAccountController extends Controller
         return view('bankAccountsOverview')->with('bankAccounts', $bankAccounts);
     }
 
-    private function encrypt($message){
-        $key = openssl_random_pseudo_bytes(18, $cstrong);
-        $cipher = "aes-128-gcm";
-        $ivlen = openssl_cipher_iv_length($cipher);
-        $iv = openssl_random_pseudo_bytes($ivlen);
-        return openssl_encrypt($message, $cipher, $key, $options=0, $iv, $tag);
-    }
-
-    private function decrypt($ciphertext){
-        $cipher = "aes-128-gcm";
-        $ivlen  = openssl_cipher_iv_length($cipher);
-        $iv = openssl_random_pseudo_bytes($ivlen);
-        return openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv, $tag);
-    }
-
     private function saveInDb($account){
         $bankAccount = new BankAccount;
-        
+        // $encrypt = encrypt($account);
+        // echo $encrypt;
         $bankAccount->fill([
                     'account_number' => $account,
                     'user_id' => Auth::user()->id,                   
@@ -48,7 +35,8 @@ class BankAccountController extends Controller
     }
 
     public function create(Request $req){
-       $account = $req['firstname'];
+       $account = htmlspecialchars($req['newaccount'], ENT_QUOTES, 'UTF-8');
+       $account = $req['newaccount'];
        if (!preg_match('/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$/',
                 $account)){
                     return redirect()->back()->withErrors("Ongeldige iban");

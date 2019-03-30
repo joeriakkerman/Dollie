@@ -6,9 +6,9 @@
 <div class="container">
 <table class="table" id= "mytable">
 <tr>
-<th>Bankaccount</th>
-<th>Balance</th>
-<th>Delete</th>
+<th>{{ __('Bankaccount') }}</th>
+<th>{{ __('Balance') }}</th>
+<th>{{ __('Delete') }}</th>
 </tr>
 @foreach($bankAccounts as $accounts)
 <tr>
@@ -36,8 +36,8 @@
 <form action="/bankAccountsOverview" method='POST'>
 @csrf
 <br>
-  <h4>Add new bankaccount</h2>
-  <input type="text" size="30" style="color: #d4cfcd" name=" firstname" placeholder="Voorbeeld: NL65RABO0844637524">
+  <h4>{{ __('Add new bankaccount') }}</h2>
+  <input type="text" size="30" style="color: #d4cfcd" name="newaccount" placeholder="NL65RABO0844637524">
   <br>
   @if ($errors->any())
   {{ implode('', $errors->all(':message')) }}

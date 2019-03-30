@@ -20,6 +20,9 @@ class DolliesController extends Controller
         $currency = htmlspecialchars($req['currency'], ENT_QUOTES, 'UTF-8');
         $amount = htmlspecialchars($req['amount'], ENT_QUOTES, 'UTF-8');
         $account_number = htmlspecialchars($req['account_number'], ENT_QUOTES, 'UTF-8');
+        $recurring = htmlspecialchars($req['recurring'], ENT_QUOTES, 'UTF-8');
+        $recurring_amount = htmlspecialchars($req['amount_recurring'], ENT_QUOTES, 'UTF-8');
+        $dollie_date = htmlspecialchars($req['dollie_date'], ENT_QUOTES, 'UTF-8');
         $payers = array();
 
         Log::debug("account number in verify dollie function: " . $account_number);
@@ -33,10 +36,10 @@ class DolliesController extends Controller
         if(isset($req['deletepayer'])){
             $pos = array_search($req['deletepayer'], $payers);
             unset($payers[$pos]);
-            return view('verifydollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'account_number' => $account_number, 'payers' => $payers]);
-        }else if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount) && !empty($account_number)){
+            return view('verifydollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'account_number' => $account_number,'recurring' => $recurring,'recurring_amount' => $recurring_amount, 'dollie_date' => $dollie_date, 'payers' => $payers]);
+        }else if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount) && !empty($account_number) && !empty($dollie_date)){
             if(is_numeric($amount) && $amount > 0){
-                return view('verifydollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'account_number' => $account_number, 'payers' => $payers]);
+                return view('verifydollie', ['name' => $name, 'description' => $desc, 'currency' => $currency, 'amount' => $amount, 'account_number' => $account_number,'recurring' => $recurring, 'recurring_amount' => $recurring_amount, 'dollie_date' => $dollie_date, 'payers' => $payers]);
             }else{
                 return redirect()->back()->withErrors('Amount should be a positive number');
             }
@@ -45,13 +48,14 @@ class DolliesController extends Controller
         }
     }
 
-    private function saveInDb($name, $desc, $currency, $amount, $account_number, $payers){
+    private function saveInDb($name, $desc, $currency, $amount, $account_number, $dollie_date, $payers){
         $dollie = new Dollie;
         $dollie->fill(['user_id' => Auth::user()->id,
                     'name' => $name,
                     'description' => $desc,
                     'currency' => $currency,
                     'amount' => $amount,
+                    'dollie_date' => $dollie_date,
                     'account_number' => $account_number]);
         try{
             if(!$dollie->save()){
@@ -78,12 +82,18 @@ class DolliesController extends Controller
         $currency = htmlspecialchars($req['currency'], ENT_QUOTES, 'UTF-8');
         $amount = htmlspecialchars($req['amount'], ENT_QUOTES, 'UTF-8');
         $account_number = htmlspecialchars($req['account_number'], ENT_QUOTES, 'UTF-8');
+        $dollie_date = htmlspecialchars($req['dollie_date'], ENT_QUOTES, 'UTF-8');
+        $recurring = htmlspecialchars($req['recurring'], ENT_QUOTES, 'UTF-8');
+        $recurring_amount = htmlspecialchars($req['amount_recurring'], ENT_QUOTES, 'UTF-8');
         $payers = array();
 
         if(isset($req['payers'])) $payers = json_decode($req['payers'], true);
 
         if(!empty($name) && !empty($desc) && !empty($currency) && !empty($amount) && !empty($account_number)){
-            $msg = $this->saveInDb($name, $desc, $currency, $amount, $account_number, $payers);
+            $msg = $this->saveInDb($name, $desc, $currency, $amount, $account_number, $dollie_date, $payers);
+            if($recurring != 'none'){
+                $this->scheduledPayment($name, $desc, $currency, $amount, $account_number, $dollie_date, $payers, $recurring, $recurring_amount);
+            }
             if(!isset($msg)){
                 return redirect("/");
             }else{
@@ -91,6 +101,23 @@ class DolliesController extends Controller
             }
         }else{
             return redirect()->back()->withErrors('Could not save new dollie in the database... Please try again!');
+            }
+    }
+
+    public function scheduledPayment($name, $desc, $currency, $amount, $account_number, $dollie_date, $payers, $recurring, $recurring_amount){
+        if($recurring == 'weekly'){
+            $startDate = date_create($dollie_date);
+            for($x = 0; $x < $recurring_amount; $x++ ){
+                $newdate = date_add($startDate, date_interval_create_from_date_string('7 days'));
+                $this->saveInDb($name, $desc, $currency, $amount, $account_number, $newdate, $payers);
+            }
+        }
+        else if($recurring == 'monthly'){
+            $beginDate = date_create($dollie_date);
+            for($x = 0; $x < $recurring_amount; $x++ ){
+                $newdate = date_add($beginDate, date_interval_create_from_date_string('1 month'));
+                $this->saveInDb($name, $desc, $currency, $amount, $account_number, $newdate, $payers);
+            }
         }
     }
 }

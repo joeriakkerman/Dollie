@@ -1,0 +1,48 @@
+{
+    "Login": "Inloggen",
+    "E-Mail Address": "Email",
+    "Password": "Wachtwoord",
+    "Remember Me": "Gebruikersnaam onthouden",
+    "Forgot Your Password?": "Wachtwoord vergeten?",
+    "Register": "Registreren",
+    "Name": "Naam",
+    "Confirm Password": "Wachtwoord bevestigen",
+
+    "Logout": "Uitloggen",
+    "My Dollies": "Mijn Dollies",
+    "New Dollie": "Nieuwe Dollie",
+    "Scheduled Dollies": "Geplande Dollies",
+    "Billing accounts": "Rekeningen beheren",
+    "Outgoing": "Uitgaande",
+    "Incoming": "Inkomende",
+    "Description": "Beschrijving",
+    "From": "Van",
+    "Currency": "Eenheid",
+    "Amount": "Hoeveelheid",
+    "Created at": "Aangemaakt op",
+    "Paid": "Betaald",
+    "Delete": "Verwijderen",
+    "Search": "Zoeken",
+    "Billing Accounts": "Betaalrekeningen",
+    "Add new bankaccount": "Nieuwe betaalrekening toevoegen",
+    "Bankaccount": "Betaalrekening",
+    "Balance": "Saldo",
+    "Send date": "Verzenddatum", 
+    "Recurring": "Terugkerende betaling",
+    "Times recurring": "Aantal",
+    "Submit": "Bevestigen",
+    "none": "geen",
+    "weekly": "wekelijks",
+    "monthly": "maandelijks",
+    "Description:": "Beschrijving:",
+    "Currency:": "Eenheid:",
+    "Amount:": "Hoeveelheid:",
+    "Bankaccount:": "Ontvangstrekening:",
+    "Dollie date:": "Dollie verzenddatum:",
+    "Send Dollie to:": "Dollie versturen aan:",
+    "Search...": "Zoeken..."
+
+
+     
+
+}

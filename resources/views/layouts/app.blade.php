@@ -10,14 +10,14 @@
     <title>{{ config('app.name', 'Dollie') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('style')
 </head>
 <body>
     <div id="app">
@@ -38,14 +38,23 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
+                        @foreach(config('app.available_locales') as $locale)
+                        <li class="nav-item">
+                        <a class="nav-link" 
+                        @if(app()->getLocale() == $locale) style="text-decoration: underline" @endif
+                        href="{{ route(\Illuminate\Support\Facades\Route::currentRouteName(), $locale)}}">{{ strtoupper($locale) }}</a>
+                        </li>
+                        @endforeach
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login', app()->getLocale()) }}">{{ __('Login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register', app()->getLocale()) }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
@@ -55,19 +64,22 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{ route('logout', app()->getLocale()) }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('bankAccountsOverview') }}">
-                                        Billing accounts
+                                    <a class="dropdown-item" href="{{ route('bankAccountsOverview', app()->getLocale()) }}">
+                                            {{ __('Billing Accounts') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('newdollie') }}">
-                                        New Dollie
+                                    <a class="dropdown-item" href="{{ route('newdollie', app()->getLocale()) }}">
+                                            {{ __('New Dollie') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('events', app()->getLocale()) }}">
+                                            {{ __('Scheduled Dollies') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ route('logout', app()->getLocale()) }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
@@ -82,5 +94,7 @@
             @yield('content')
         </main>
     </div>
+
+
 </body>
 </html>
