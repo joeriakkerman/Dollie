@@ -5,31 +5,31 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Mijn Dollies</div>
+                <div class="card-header">{{ __('My Dollies') }}</div>
                 <div class="card-body">
                     <form id="filterform" action="/" method="POST">
                         @csrf
-                        <input type="text" name="search" placeholder="Search" @if(!empty($search)) value="{{ $search }}" @endif>
+                        <input type="text" name="search" placeholder="{{ __('Search') }}" @if(!empty($search)) value="{{ $search }}" @endif>
                         <select name="filter" onchange="event.preventDefault(); document.getElementById('filterform').submit();">
-                            <option value="outgoing" @if($filter == "outgoing") selected @endif>Outgoing</option>
-                            <option value="incoming" @if($filter == "incoming") selected @endif>Incoming</option>
+                            <option value="outgoing" @if($filter == "outgoing") selected @endif>{{ __('Outgoing') }}</option>
+                            <option value="incoming" @if($filter == "incoming") selected @endif>{{ __('Incoming') }}</option>
                         </select>
                     </form>
                     <table class="table">
                         <tr>
-                            <th>Name</th>
-                            <th>Description</th>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Description') }}</th>
                             @if($filter == "incoming")
-                                <th>From</th>
+                                <th>{{ __('From') }}</th>
                             @endif
-                            <th>Currency</th>
-                            <th>Amount</th>
-                            <th>Created At</th>
+                            <th>{{ __('Currency') }}</th>
+                            <th>{{ __('Amount') }}</th>
+                            <th>{{ __('Created at') }}</th>
                             @if($filter == "incoming")
-                                <th>Payed</th>
+                                <th>{{ __('Paid') }}</th>
                             @else
-                                <th>Copy Link</th>
-                                <th>Delete</th>
+                                <th>{{ __('Delete') }}</th>
+                                <th>{{ __('Copy Link') }}</th>
                             @endif
                         </tr>
                         @foreach($dollies as $dollie)
@@ -47,7 +47,7 @@
                                     @foreach($dollie->payments as $payment)
                                         @if($payment->payer_id == Illuminate\Support\Facades\Auth::user()->id)
                                             @if($payment->payed)
-                                                <td>Payed</td>
+                                                <td>{{ __('Paid') }}</td>
                                             @else
                                                 <td>
                                                     <form method="POST" action="/payment">
@@ -64,7 +64,7 @@
                                 @else
                                     <td><button class="btn" onclick="copyLink({{ $dollie->id }})">Copy</button></td>
                                     <td>
-                                        <form method="POST" action="{{ route('dollie.delete') }}">
+                                        <form method="POST" action="{{ route('dollie.delete', app()->getLocale()) }}">
                                             @csrf
                                             <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
                                             <div class="form-group">

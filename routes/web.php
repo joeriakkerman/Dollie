@@ -11,11 +11,18 @@
 |
 */
 
+Route::get('/', function() {return redirect(app()->getLocale());
+});
+
+Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
+'middleware' => 'setlocale',], function(){
+
 Route::get('/', [
     'middleware' => ['auth'],
     'uses' => "HomeController@index"])->name('index');
 
-Route::post('/', "HomeController@filter")->name('filter');
+
+// Route::post('/', "HomeController@filter")->name('filter');
 
 Route::get('/bankAccountsOverview', 'BankAccountController@index')->name('bankAccountsOverview');
 
@@ -23,11 +30,11 @@ Route::post('/bankAccountsOverview', 'BankAccountController@create')->name('bank
 
 Route::delete('/bankAccountsOverview', 'BankAccountController@delete');
 
-// Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
+Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
 
 Route::post('/users', "HomeController@getUsers")->name('users');
 
-Route::post('/deletedollie', "HomeController@deleteDollie")->name('dollie.delete');
+ Route::post('/deletedollie', "HomeController@deleteDollie")->name('dollie.delete');
 
 Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
 
@@ -37,7 +44,7 @@ Route::get('/payment', [
 
 Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
 
-Auth::routes();
+  Auth::routes();
 
 Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
@@ -58,3 +65,8 @@ Route::resource('bankAccounts', 'BankAccountController');
 Route::post('/savedollie', 'DolliesController@saveDollie')->name('newdollie.save');
 
 Route::get('/accounts', 'AccountsController@index')->name('accounts');
+
+Route::get('events', 'EventsController@index')->name('events');
+
+Route::post('events', 'EventsController@new')->name('events');
+});

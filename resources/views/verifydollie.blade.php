@@ -7,16 +7,18 @@
             <div class="card">
                 <div class="card-header">{{ $name }}</div>
                 <div class="card-body">
-                    <strong>Description:</strong> {{ $description }}<br>
-                    <strong>Currency:</strong> {{ $currency }}<br>
-                    <strong>Amount:</strong> {{ $amount }}<br>
-                    <strong>Bank Account:</strong> {{ $account_number }}<br>
+                    <strong>{{ __('Description:') }}</strong> {{ $description }}<br>
+                    <strong>{{ __('Currency:') }}</strong> {{ $currency }}<br>
+                    <strong>{{ __('Amount:') }}</strong> {{ $amount }}<br>
+                    <strong>{{ __('Bankaccount:') }}</strong> {{ $account_number }}<br>
+                    <strong>{{ __('Dollie date:') }}</strong> {{ $dollie_date }}<br>
+
                     <br>
-                    Send Dollie to:
+                    {{ __('Send Dollie to:') }}
                     <table id="user_table" class="table">
                         <tr>
-                            <th>Name</th>
-                            <th>Delete</th>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Delete') }}</th>
                         </tr>
                         @foreach($payers as $payer)
                         <tr>
@@ -31,6 +33,9 @@
                                     <input type="hidden" name="account_number" value="{{ $account_number }}">
                                     <input type="hidden" name="payers" value="{{ json_encode($payers) }}">
                                     <input type="hidden" name="deletepayer" value="{{ $payer }}">
+                                    <input type="hidden" name="dollie_date" value="{{ $dollie_date }}">
+                                    <input type="hidden" name="recurring" value="{{ $recurring }}">
+                                    <input type="hidden" name="amount_recurring" value="{{ $recurring_amount }}">
                                     <div class="form-group">
                                         <input type="submit" class="btn btn-danger delete-account" value="Delete">
                                     </div>
@@ -41,7 +46,7 @@
                     </table>
 
                     <div id="userDropdown">
-                        <input type="text" placeholder="Search.." id="findUser" onkeyup="myFunction()">
+                        <input type="text" placeholder="{{ __('Search:') }}" id="findUser" onkeyup="myFunction()">
                     </div>
 
                     <p id="errorMessage"></p>
@@ -53,7 +58,7 @@
                             $(document).ready(function(){
                                 $.ajax({
                                     type: 'POST',
-                                    url: "{{ route('users') }}",
+                                    url: "{{ route('users', app()->getLocale()) }}",
                                     dataType: 'text',
                                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                     data: {
@@ -75,7 +80,7 @@
                                         }
                                         var dd = document.getElementById("userDropdown");
                                         for(var i = 0; i < o.length; i++){
-                                            dd.innerHTML += '<form class="user" method="POST" action="/newdollie"> @csrf <input type="hidden" name="name" value="{{ $name }}"> <input type="hidden" name="description" value="{{ $description }}"> <input type="hidden" name="currency" value="{{ $currency }}"> <input type="hidden" name="amount" value="{{ $amount }}"> <input type="hidden" name="account_number" value="{{ $account_number }}"> <input type="hidden" name="payers" value="{{ json_encode($payers) }}"> <input type="hidden" name="addpayer" value="' + o[i].id + '"> <input type="submit" value="' + o[i].name + '"> </form>';
+                                            dd.innerHTML += '<form class="user" method="POST" action="{{ route('newdollie.verify', app()->getLocale()) }}"> @csrf <input type="hidden" name="name" value="{{ $name }}"> <input type="hidden" name="description" value="{{ $description }}"> <input type="hidden" name="recurring" value="{{ $recurring }}"> <input type="hidden" name="amount_recurring" value="{{ $recurring_amount }}"> <input type="hidden" name="currency" value="{{ $currency }}"> <input type="hidden" name="dollie_date" value="{{ $dollie_date }}"> <input type="hidden" name="amount" value="{{ $amount }}"> <input type="hidden" name="account_number" value="{{ $account_number }}"> <input type="hidden" name="payers" value="{{ json_encode($payers) }}"> <input type="hidden" name="addpayer" value="' + o[i].id + '"> <input type="submit" value="' + o[i].name + '"> </form>';
                                         }
                                     },
                                     error: function(xhr, errDesc, exception) {
@@ -128,7 +133,7 @@
                         }
                     </script>
 
-                    <form action="{{ route('newdollie.save') }}" method="POST">
+                    <form action="{{ route('newdollie.save', app()->getLocale()) }}" method="POST">
                         @csrf
                         <input type="hidden" name="name" value="{{ $name }}">
                         <input type="hidden" name="description" value="{{ $description }}">
@@ -136,6 +141,9 @@
                         <input type="hidden" name="amount" value="{{ $amount }}">
                         <input type="hidden" name="account_number" value="{{ $account_number }}">
                         <input type="hidden" name="payers" value="{{ json_encode($payers) }}">
+                        <input type="hidden" name="dollie_date" value="{{ $dollie_date }}">
+                        <input type="hidden" name="recurring" value="{{ $recurring }}">
+                        <input type="hidden" name="amount_recurring" value="{{ $recurring_amount }}">
                         <input type="submit" name="save" value="Save">
                     </form>
 
