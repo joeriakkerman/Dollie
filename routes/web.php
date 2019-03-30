@@ -38,6 +38,10 @@ Route::post('/users', "HomeController@getUsers")->name('users');
 
 Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
 
+Route::get('/payment', [
+    'middleware' => ['auth'],
+    'uses' => 'PaymentsController@link'])->name('payment.link');
+
 Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
 
   Auth::routes();
@@ -46,7 +50,15 @@ Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
 Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
-// Route::post('/newdollie', 'DolliesController@saveDollie')->name('newdollie.save');
+Route::post('/getgroups', 'GroupController@getGroups')->name('getgroups');
+
+Route::get('/groups', 'GroupController@index')->name('groups');
+
+Route::post('/groups', 'GroupController@add')->name('addgroup');
+
+Route::post('/deletegroup', 'GroupController@delete')->name('group.delete');
+
+Route::post('/addmember', 'GroupController@addMember')->name('group.addmember');
 
 Route::resource('bankAccounts', 'BankAccountController');
 

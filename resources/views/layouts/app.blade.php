@@ -10,7 +10,8 @@
     <title>{{ config('app.name', 'Dollie') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -77,6 +78,9 @@
                                     </a>
                                     <a class="dropdown-item" href="{{ route('events', app()->getLocale()) }}">
                                             {{ __('Scheduled Dollies') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('groups') }}">
+                                        Groups
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout', app()->getLocale()) }}" method="POST" style="display: none;">
