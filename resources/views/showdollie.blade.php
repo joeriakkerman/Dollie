@@ -13,14 +13,17 @@
                     <strong>{{ __('Bankaccount:') }}</strong> {{ $dollie->account_number }}<br>
                     <strong>{{ __('Dollie date:') }}</strong> {{ $dollie->dollie_date }}<br>
 
-                    @if($dollie->extras() !== null && isset($dollie->extras()->filename))
-                        <img src="{{ route('dollie.image', ['filename' => $dollie->extras()->filename]) }}"/>
+                    @if($dollie->extras !== null && isset($dollie->extras->filename))
+                        <img src="{{ route('dollie.image', ['filename' => $dollie->extras->filename]) }}"/>
                     @endif
 
-                    <form action="{{ route('prepare', app()->getLocale()) }}" method="POST">
-                        <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
-                        <input class="btn" type="submit" value="__('Delete')">
-                    </form>
+                    @if($dollie->user->id !== Illuminate\Support\Facades\Auth::user()->id)
+                        <form action="{{ route('prepare', app()->getLocale()) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
+                            <input class="btn" type="submit" value="Pay">
+                        </form>
+                    @endif
 
                     @if($errors->any())
                         {{$errors->first()}}

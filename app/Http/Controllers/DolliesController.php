@@ -20,10 +20,9 @@ class DolliesController extends Controller
         return view('newdollie', ["bankaccounts" => Auth::user()->bank_accounts]);
     }
 
-    public function showDollie($dollie_id){
-        return "ID: " . $dollie_id;
-        $dollie = Dollie::find($dollie_id);
-        if(Dollie::isAllowed($dollie_id) || $dollie->user_id == Auth::user()->id){
+    public function showDollie(Request $req){
+        $dollie = Dollie::find($req["dollie_id"]);
+        if(Dollie::isAllowed($req["dollie_id"]) || $dollie->user_id == Auth::user()->id){
             return view('showdollie', ["dollie" => $dollie]);
         }
         return redirect()->back()->withErrors('You are not allowed to see information about this dollie');
@@ -102,19 +101,23 @@ class DolliesController extends Controller
             if(!$dollie->save()){
                 return "Could not save dollie in the database";  
             }else{
+
+                if(isset($filename) && !empty($filename)){
+                    Log::debug("filename " . $filename);
+                    $extras = new DollieExtras;
+                    $extras->fill(['dollie_id' => $dollie->id,
+                                'filename' => $filename]);
+                    if(!$extras->save()){
+                        return "Could not add image to this dollie";
+                    }
+                }else Log::debug("filename is empty");
+
                 foreach($payers as $payer){
                     $payment = new Payment;
                     $payment->fill(['dollie_id' => $dollie->id, 'payer_id' => $payer, 'payed' => false]);
 
                     if(!$payment->save()){
                         return "Could not save dollie for the specified users";
-                    }else{
-                        $extras = new DollieExtras;
-                        $extras->fill(['dollie_id' => $dollie->id,
-                                    'filename' => $filename]);
-                        if(!$extras->save()){
-                            return "Could not add image to this dollie";
-                        }
                     }
                 }
             }
@@ -134,6 +137,8 @@ class DolliesController extends Controller
         $recurring = htmlspecialchars($req['recurring'], ENT_QUOTES, 'UTF-8');
         $recurring_amount = htmlspecialchars($req['amount_recurring'], ENT_QUOTES, 'UTF-8');
         $filename = htmlspecialchars($req['filename'], ENT_QUOTES, 'UTF-8');
+
+        Log::debug("filename in save dollie " . $filename);
         $payers = array();
 
         if(isset($req['payers'])) $payers = json_decode($req['payers'], true);

@@ -48,7 +48,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
 
   Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
-  Route::get('/dollie/{dollie_id}', "DolliesController@showDollie")->name('dollie.show');
+  Route::post('/dollie', "DolliesController@showDollie")->name('dollie.show');
 
   Route::post('/getgroups', 'GroupController@getGroups')->name('getgroups');
 
