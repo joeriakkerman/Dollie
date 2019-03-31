@@ -62,7 +62,7 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <td><button class="btn" onclick="copyLink({{ $dollie->id }})">Copy</button></td>
+                                    <td><button class="btn" onclick="copyLink({{ $dollie->id }})">{{ __('Copy') }}</button></td>
                                     <td>
                                         <form method="POST" action="{{ route('dollie.delete', app()->getLocale()) }}">
                                             @csrf
@@ -87,7 +87,7 @@
                         function copyLink(id){
                             var tempInput = document.createElement("input");
                             tempInput.style = "position: absolute; left: -1000px; top: -1000px";
-                            tempInput.value = "{{ route('payment.link') }}/?dollie_id=" + id;
+                            tempInput.value = "{{ route('payment.link', app()->getLocale()) }}/?dollie_id=" + id;
                             document.body.appendChild(tempInput);
                             tempInput.select();
                             document.execCommand("copy");
