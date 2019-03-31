@@ -54,7 +54,7 @@
                                                         @csrf
                                                         <input type="hidden" name="dollie_id" value="{{ $payment->dollie_id }}">
                                                         <div class="form-group">
-                                                            <input type="submit" class="btn" value="Pay">
+                                                            <input type="submit" class="btn" value="{{ __('Pay') }}">
                                                         </div>
                                                     </form>
                                                 </td>
