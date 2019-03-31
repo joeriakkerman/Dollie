@@ -18,11 +18,15 @@
                     @endif
 
                     @if($dollie->user->id !== Illuminate\Support\Facades\Auth::user()->id)
+                        @if($dollie->hasPaymentOpen())
+                        {{ __('Paid') }}
+                        @else
                         <form action="{{ route('prepare', app()->getLocale()) }}" method="POST">
                             @csrf
                             <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
                             <input class="btn" type="submit" value="Pay">
                         </form>
+                        @endif
                     @endif
 
                     @if($errors->any())

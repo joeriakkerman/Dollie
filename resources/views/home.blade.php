@@ -34,6 +34,11 @@
                         </tr>
                         @foreach($dollies as $dollie)
                         <?php if(empty($_POST["search"]) || (!empty($_POST['search']) && $dollie->searchRelevant($_POST["search"]))){?>
+                            <style>
+                                .clickable-row:hover {
+                                    background-color: #d8d8d8;
+                                }
+                            </style>
                             <tr id="{{ $dollie->id }}" class="clickable-row">
                                 <form id="form{{ $dollie->id }}" action="{{ route('dollie.show', app()->getLocale()) }}" method="POST">
                                     @csrf
@@ -66,7 +71,7 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <td><button class="btn" onclick="copyLink({{ $dollie->id }})">{{ __('Copy') }}</button></td>
+                                    <td><input type="button" value ="{{ __('Copy') }}" class="btn" onclick="event.preventDefault(); copyLink({{ $dollie->id }})"></td>
                                     <td>
                                         <form method="POST" action="{{ route('dollie.delete', app()->getLocale()) }}">
                                             @csrf
@@ -87,6 +92,7 @@
                             $(".clickable-row").click(function() {
                                 var id = $(this).attr("id");
                                 document.getElementById("form"+id).submit();
+                                return false;
                             });
                         });
                     </script>
@@ -106,6 +112,10 @@
                             tempInput.select();
                             document.execCommand("copy");
                             document.body.removeChild(tempInput);
+                            
+                            if (!e) var e = window.event;
+                            e.cancelBubble = true;
+                            if (e.stopPropagation) e.stopPropagation();
                         }
                     </script>
                 </div>

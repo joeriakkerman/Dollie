@@ -37,6 +37,15 @@ class Dollie extends Model
         return false;
     }
 
+    public function hasPaymentOpen(){
+        foreach($this->payments as $payment){
+            if($payment->payer_id == Auth::user()->id)
+                if($payment->payed) return true;
+                else return false;
+        }
+        return false;
+    }
+
     public function searchRelevant($search){
         if(strpos(strtolower($this->name), strtolower($search)) !== false) return true;
         else if(strpos(strtolower($this->description), strtolower($search)) !== false) return true;

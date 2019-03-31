@@ -22,7 +22,7 @@ class PaymentsController extends Controller
         if(Dollie::isAllowed($req["dollie_id"])){
             return $this->prepare($req);
         }
-        return "You are not linked to this dollie, so you are not able to pay this dollie... ";
+        return "You are not allowed to pay for this dollie... ";
     }
 
     public function prepare(Request $req){
