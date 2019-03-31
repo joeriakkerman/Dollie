@@ -62,7 +62,7 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <td><button class="btn" onclick="copyLink({{ $dollie->id }})">Copy</button></td>
+                                    <td><button class="btn" onclick="copyLink({{ $dollie->id }})">{{ __('Copy') }}</button></td>
                                     <td>
                                         <form method="POST" action="{{ route('dollie.delete', app()->getLocale()) }}">
                                             @csrf
