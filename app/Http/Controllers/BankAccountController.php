@@ -13,6 +13,9 @@ class BankAccountController extends Controller
     public function index()
     {
         $bankAccounts = BankAccount ::whereUserId(Auth::id())->get();
+        foreach($bankAccounts as $account){
+            $account['account_number'] = Crypt::decryptString($account['account_number']);      
+        }
         return view('bankAccountsOverview')->with('bankAccounts', $bankAccounts);
     }
 
@@ -21,7 +24,7 @@ class BankAccountController extends Controller
         // $encrypt = encrypt($account);
         // echo $encrypt;
         $bankAccount->fill([
-                    'account_number' => $account,
+                    'account_number' => Crypt::encryptString($account),
                     'user_id' => Auth::user()->id,                   
                     'balance' => 100
                     ]);
