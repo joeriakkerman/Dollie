@@ -45,7 +45,7 @@ class PaymentsController extends Controller
             ],
             'description' => $dollie->description,
             'webhookUrl' => route('payment.webhook'),
-            'redirectUrl' => route('index'),
+            'redirectUrl' => route('index', app()->getLocale()),
             ]);
         
         $payment = Mollie::api()->payments()->get($payment->id);
@@ -56,6 +56,7 @@ class PaymentsController extends Controller
     }
 
     public function webhook(Request $req){
+        Log::debug("request id " . $req['id']);
         $payment = Mollie::api()->payments()->get($req['id']);
         if ($payment->isPaid()){
             Payment::where("payment_id", "=", $req['id'])->update(['payed' => 1]);

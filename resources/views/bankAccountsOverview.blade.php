@@ -17,12 +17,12 @@
 <!-- <td>{{$accounts->balance}}</td> -->
 
 <td> 
-    <form method="POST" action="/bankAccountsOverview">
+    <form method="POST" action="{{ route('bankaccount.delete', app()->getLocale()) }}">
         {{ csrf_field() }}
         {{ method_field('DELETE') }}
         <input type="hidden" name="bank_account" value="{{$accounts->account_number}}">
         <div class="form-group">
-            <input type="submit" class="btn btn-danger delete-account" value="Delete">
+            <input type="submit" class="btn btn-danger delete-account" value="{{ __('Delete') }}">
         </div>
     </form>
 </td>
@@ -33,7 +33,7 @@
 </div>
 
 <div class="container">
-<form action="/bankAccountsOverview" method='POST'>
+<form action="{{ route('bankAccountsOverview', app()->getLocale()) }}" method='POST'>
 @csrf
 <br>
   <h4>{{ __('Add new bankaccount') }}</h2>

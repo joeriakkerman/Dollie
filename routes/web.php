@@ -22,15 +22,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
       'uses' => "HomeController@index"])->name('index');
 
 
-  // Route::post('/', "HomeController@filter")->name('filter');
+  Route::post('/', "HomeController@filter")->name('filter');
 
   Route::get('/bankAccountsOverview', 'BankAccountController@index')->name('bankAccountsOverview');
 
   Route::post('/bankAccountsOverview', 'BankAccountController@create')->name('bankAccountsOverview');
 
-  Route::delete('/bankAccountsOverview', 'BankAccountController@delete');
+  Route::delete('/bankAccountsOverview', 'BankAccountController@delete')->name('bankaccount.delete');
 
-  Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
+  //Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
 
   Route::post('/users', "HomeController@getUsers")->name('users');
 
@@ -41,8 +41,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
   Route::get('/payment', [
       'middleware' => ['auth'],
       'uses' => 'PaymentsController@link'])->name('payment.link');
-
-  Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
 
   Auth::routes();
 
@@ -70,3 +68,5 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
 
   Route::post('events', 'EventsController@new')->name('events');
 });
+
+Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');

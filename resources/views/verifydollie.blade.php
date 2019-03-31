@@ -24,7 +24,7 @@
                         <tr>
                             <td>{{App\User::getName($payer)}}</td>
                             <td>
-                                <form method="POST" action="/newdollie">
+                                <form method="POST" action="{{ route('newdollie.verify', app()->getLocale()) }}">
                                     @csrf
                                     <input type="hidden" name="name" value="{{ $name }}">
                                     <input type="hidden" name="description" value="{{ $description }}">
@@ -37,7 +37,7 @@
                                     <input type="hidden" name="recurring" value="{{ $recurring }}">
                                     <input type="hidden" name="amount_recurring" value="{{ $recurring_amount }}">
                                     <div class="form-group">
-                                        <input type="submit" class="btn btn-danger delete-account" value="Delete">
+                                        <input type="submit" class="btn btn-danger delete-account" value="{{ __('Delete') }}">
                                     </div>
                                 </form>
                             </td>
@@ -94,7 +94,7 @@
 
                                 $.ajax({
                                     type: 'POST',
-                                    url: "{{ route('getgroups') }}",
+                                    url: "{{ route('getgroups', app()->getLocale()) }}",
                                     dataType: 'text',
                                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                     data: {
@@ -116,7 +116,7 @@
                                         }
                                         var dd = document.getElementById("userDropdown");
                                         for(var i = 0; i < o.length; i++){
-                                            dd.innerHTML += '<form class="group" method="POST" action="/newdollie"> @csrf <input type="hidden" name="name" value="{{ $name }}"> <input type="hidden" name="description" value="{{ $description }}"> <input type="hidden" name="currency" value="{{ $currency }}"> <input type="hidden" name="amount" value="{{ $amount }}"> <input type="hidden" name="account_number" value="{{ $account_number }}"> <input type="hidden" name="payers" value="{{ json_encode($payers) }}"> <input type="hidden" name="addgroup" value="' + o[i].id + '"> <input type="submit" value="Group: ' + o[i].name + '"> </form>';
+                                            dd.innerHTML += '<form class="group" method="POST" action="{{ route('newdollie.verify', app()->getLocale()) }}"> @csrf <input type="hidden" name="name" value="{{ $name }}"> <input type="hidden" name="description" value="{{ $description }}"> <input type="hidden" name="currency" value="{{ $currency }}"> <input type="hidden" name="amount" value="{{ $amount }}"> <input type="hidden" name="account_number" value="{{ $account_number }}"> <input type="hidden" name="payers" value="{{ json_encode($payers) }}"> <input type="hidden" name="addgroup" value="' + o[i].id + '"> <input type="submit" value="Group: ' + o[i].name + '"> </form>';
                                         }
                                     },
                                     error: function(xhr, errDesc, exception) {

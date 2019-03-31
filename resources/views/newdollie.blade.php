@@ -42,9 +42,9 @@
             <label for="bankaccount" class="col-md-4 col-form-label text-md-right">{{ __('Bankaccount') }}</label>
             <select id='bankaccount' name="account_number">
             @foreach($bankaccounts as $bankaccount)
-                <option value="{{ $bankaccount->account_number }}">{{ $bankaccount->account_number }}</option>;
+                <option value="{{ $bankaccount->account_number }}">{{ $bankaccount->account_number }}</option>
             @endforeach
-            </select>
+            </select><br>
             <label for="date" class="col-md-4 col-form-label text-md-right">{{ __('Send date') }}</label>
             <input id='date' type="date" name = "dollie_date"><br>
             <label for="recurring" class="col-md-4 col-form-label text-md-right">{{ __('Recurring') }}</label>
@@ -57,7 +57,7 @@
             <input id='recurring_amount' type="number" name="amount_recurring"><br>
         </div>
  
-    <br>
+        <br>
             <div class="col-md-0 text-center">
             <input type="submit" class="btn btn-primary" name="submit" value="{{ __('Submit') }}">
             </div>

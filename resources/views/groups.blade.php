@@ -8,7 +8,7 @@
             <th>{{ __('Name') }}</th>
             <th>{{ __('Group Members') }}</th>
             <th>{{ __('Add Member') }}</th>
-            <th>{{ __('Delete Member') }}</th>
+            <th>{{ __('Delete') }}</th>
         </tr>
         @foreach($groups as $group)
             <tr>
@@ -26,7 +26,7 @@
                         @csrf
                         <input type="hidden" name="group_id" value="{{ $group->id }}">
                         <div class="form-group">
-                            <input type="submit" class="btn btn-danger delete-account" value="Delete">
+                            <input type="submit" class="btn btn-danger delete-account" value="{{ __('Delete') }}">
                         </div>
                     </form>
                 </td>

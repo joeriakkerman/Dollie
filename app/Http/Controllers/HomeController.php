@@ -10,10 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    private function getRelevantDollies($dollies){
+        $rel = array();
+        foreach($dollies as $dollie){
+            if($dollie->dollie_date <= date("Y-m-d"))
+                $rel[] = $dollie;
+        }
+        return $rel;
+    }
+
     public function index()
     {
         $dollies = Auth::user()->dollies;
-        return view('home', ["dollies" => $dollies, "filter" => "outgoing", "search" => ""]);
+        return view('home', ["dollies" => $this->getRelevantDollies($dollies), "filter" => "outgoing", "search" => ""]);
     }
 
     public function filter(Request $req)
@@ -29,7 +39,7 @@ class HomeController extends Controller
         }else{
             $dollies = Dollie::where("user_id", "=", Auth::user()->id)->get();
         }
-        return view('home', ["dollies" => $dollies, "filter" => $req["filter"], "search" => $req['search']]);
+        return view('home', ["dollies" => $this->getRelevantDollies($dollies), "filter" => $req["filter"], "search" => $req['search']]);
     }
 
     public function getUsers(Request $req){

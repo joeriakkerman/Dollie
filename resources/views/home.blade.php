@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">{{ __('My Dollies') }}</div>
                 <div class="card-body">
-                    <form id="filterform" action="/" method="POST">
+                    <form id="filterform" action="{{ route('filter', app()->getLocale()) }}" method="POST">
                         @csrf
                         <input type="text" name="search" placeholder="{{ __('Search') }}" @if(!empty($search)) value="{{ $search }}" @endif>
                         <select name="filter" onchange="event.preventDefault(); document.getElementById('filterform').submit();">
@@ -28,8 +28,8 @@
                             @if($filter == "incoming")
                                 <th>{{ __('Paid') }}</th>
                             @else
-                                <th>{{ __('Delete') }}</th>
                                 <th>{{ __('Copy Link') }}</th>
+                                <th>{{ __('Delete') }}</th>
                             @endif
                         </tr>
                         @foreach($dollies as $dollie)
@@ -42,7 +42,7 @@
                                 @endif
                                 <td>{{ $dollie->currency }}</td>
                                 <td>{{ $dollie->amount }}</td>
-                                <td><?php $date = new DateTime($dollie->created_at); echo $date->format("d-m-Y"); ?></td>
+                                <td><?php $date = new DateTime($dollie->dollie_date); echo $date->format("d-m-Y"); ?></td>
                                 @if($filter == "incoming")
                                     @foreach($dollie->payments as $payment)
                                         @if($payment->payer_id == Illuminate\Support\Facades\Auth::user()->id)
@@ -50,7 +50,7 @@
                                                 <td>{{ __('Paid') }}</td>
                                             @else
                                                 <td>
-                                                    <form method="POST" action="/payment">
+                                                    <form method="POST" action="{{ route('prepare', app()->getLocale()) }}">
                                                         @csrf
                                                         <input type="hidden" name="dollie_id" value="{{ $payment->dollie_id }}">
                                                         <div class="form-group">
@@ -68,7 +68,7 @@
                                             @csrf
                                             <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
                                             <div class="form-group">
-                                                <input type="submit" class="btn btn-danger delete-account" value="Delete">
+                                                <input type="submit" class="btn btn-danger delete-account" value="{{ __('Delete') }}">
                                             </div>
                                         </form>
                                     </td>
