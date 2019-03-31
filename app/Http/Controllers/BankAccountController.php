@@ -13,18 +13,13 @@ class BankAccountController extends Controller
     public function index()
     {
         $bankAccounts = BankAccount ::whereUserId(Auth::id())->get();
-        foreach($bankAccounts as $account){
-            $account['account_number'] = Crypt::decryptString($account['account_number']);      
-        }
         return view('bankAccountsOverview')->with('bankAccounts', $bankAccounts);
     }
 
     private function saveInDb($account){
         $bankAccount = new BankAccount;
-        // $encrypt = encrypt($account);
-        // echo $encrypt;
         $bankAccount->fill([
-                    'account_number' => Crypt::encryptString($account),
+                    'account_number' => $account,
                     'user_id' => Auth::user()->id,                   
                     'balance' => 100
                     ]);
@@ -50,6 +45,7 @@ class BankAccountController extends Controller
     }
 
     public function delete(Request $req){
+        echo $req['bank_account'];
         BankAccount::where('account_number', $req['bank_account'])->delete();
         return redirect()->back();
     }
