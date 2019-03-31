@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
        
-        <form action="{{ route('newdollie.verify', app()->getLocale()) }}" method="POST">
+        <form action="{{ route('newdollie.verify', app()->getLocale()) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
             <input id='name' type="text" name="name"><br>
@@ -55,17 +55,18 @@
             </select><br>
             <label for="recurring_amount" class="col-md-4 col-form-label text-md-right">{{ __('Times recurring') }}</label>
             <input id='recurring_amount' type="number" name="amount_recurring"><br>
-        </div>
  
-        <br>
+            <input type="file" name="image" accept="images/*">
+            <br>
+            <br>
             <div class="col-md-0 text-center">
-            <input type="submit" class="btn btn-primary" name="submit" value="{{ __('Submit') }}">
+                <input type="submit" class="btn btn-primary" name="submit" value="{{ __('Submit') }}">
             </div>
         </form>
 
         @if($errors->any())
             {{$errors->first()}}
         @endif
-  
+    </div>
 </div>
 @endsection

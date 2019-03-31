@@ -34,7 +34,11 @@
                         </tr>
                         @foreach($dollies as $dollie)
                         <?php if(empty($_POST["search"]) || (!empty($_POST['search']) && $dollie->searchRelevant($_POST["search"]))){?>
-                            <tr>
+                            <tr id="{{ $dollie->id }}" class="clickable-row">
+                                <form id="form{{ $dollie->id }}" action="{{ route('dollie.show', app()->getLocale()) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
+                                </form>
                                 <td>{{ $dollie->name }}</td>
                                 <td>{{ $dollie->description }}</td>
                                 @if($filter == "incoming")
@@ -77,12 +81,22 @@
                         <?php } ?>
                         @endforeach
                     </table>
+
+                    <script>
+                        jQuery(document).ready(function($) {
+                            $(".clickable-row").click(function() {
+                                var id = $(this).attr("id");
+                                document.getElementById("form"+id).submit();
+                            });
+                        });
+                    </script>
+
                     @if($errors->any())
                         {{$errors->first()}}
                     @endif
 
                     <input type="hidden" value="none" id="myInput">
-
+                        
                     <script>
                         function copyLink(id){
                             var tempInput = document.createElement("input");
