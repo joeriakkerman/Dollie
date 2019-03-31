@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Dollie extends Model
 {
@@ -20,6 +21,20 @@ class Dollie extends Model
 
     public function bankaccount(){
         return $this->belongsTo("App\BankAccount", "account_number");
+    }
+
+    public function extras(){
+        return $this->hasOne("App\DollieExtras");
+    }
+
+    public static function isAllowed($dollie_id){
+        $dollie = Dollie::find($dollie_id);
+        if(!empty($dollie) && isset($dollie->name)){
+            foreach($dollie->payments as $payment){
+                if($payment->payer_id == Auth::user()->id) return true;
+            }
+        }
+        return false;
     }
 
     public function searchRelevant($search){

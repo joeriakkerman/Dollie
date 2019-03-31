@@ -15,7 +15,7 @@ Route::get('/', function() {return redirect(app()->getLocale());
 });
 
 Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
-'middleware' => 'setlocale',], function(){
+'middleware' => 'setlocale'], function(){
 
   Route::get('/', [
       'middleware' => ['auth'],
@@ -48,6 +48,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
 
   Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
+  Route::get('/dollie/{dollie_id}', "DolliesController@showDollie")->name('dollie.show');
+
   Route::post('/getgroups', 'GroupController@getGroups')->name('getgroups');
 
   Route::get('/groups', 'GroupController@index')->name('groups');
@@ -64,9 +66,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
 
   Route::get('/accounts', 'AccountsController@index')->name('accounts');
 
-  Route::get('events', 'EventsController@index')->name('events');
-
-  Route::post('events', 'EventsController@new')->name('events');
+  Route::get('/events', 'EventsController@index')->name('events');
 });
 
 Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
+
+Route::get('/dollieimage/{filename}', ["uses" => "DolliesController@dollieImage", "as" => "dollie.image"]);

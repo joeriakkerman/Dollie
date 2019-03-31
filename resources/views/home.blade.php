@@ -34,7 +34,7 @@
                         </tr>
                         @foreach($dollies as $dollie)
                         <?php if(empty($_POST["search"]) || (!empty($_POST['search']) && $dollie->searchRelevant($_POST["search"]))){?>
-                            <tr>
+                            <tr class="clickable-row" data-href="{{ route('dollie.show', ['locale' => app()->getLocale(), 'dollie_id' => $dollie->id]) }}">
                                 <td>{{ $dollie->name }}</td>
                                 <td>{{ $dollie->description }}</td>
                                 @if($filter == "incoming")
@@ -77,12 +77,21 @@
                         <?php } ?>
                         @endforeach
                     </table>
+
+                    <script>
+                        jQuery(document).ready(function($) {
+                            $(".clickable-row").click(function() {
+                                window.location = $(this).data("href");
+                            });
+                        });
+                    </script>
+
                     @if($errors->any())
                         {{$errors->first()}}
                     @endif
 
                     <input type="hidden" value="none" id="myInput">
-
+                        
                     <script>
                         function copyLink(id){
                             var tempInput = document.createElement("input");
