@@ -80,6 +80,7 @@
                                     </a>
                                     <a class="dropdown-item" href="{{ route('groups', app()->getLocale()) }}">
                                             {{ __('Groups') }}
+
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout', app()->getLocale()) }}" method="POST" style="display: none;">

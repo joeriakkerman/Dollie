@@ -17,56 +17,56 @@ Route::get('/', function() {return redirect(app()->getLocale());
 Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'],
 'middleware' => 'setlocale',], function(){
 
-Route::get('/', [
-    'middleware' => ['auth'],
-    'uses' => "HomeController@index"])->name('index');
+  Route::get('/', [
+      'middleware' => ['auth'],
+      'uses' => "HomeController@index"])->name('index');
 
 
-// Route::post('/', "HomeController@filter")->name('filter');
+  // Route::post('/', "HomeController@filter")->name('filter');
 
-Route::get('/bankAccountsOverview', 'BankAccountController@index')->name('bankAccountsOverview');
+  Route::get('/bankAccountsOverview', 'BankAccountController@index')->name('bankAccountsOverview');
 
-Route::post('/bankAccountsOverview', 'BankAccountController@create')->name('bankAccountsOverview');
+  Route::post('/bankAccountsOverview', 'BankAccountController@create')->name('bankAccountsOverview');
 
-Route::delete('/bankAccountsOverview', 'BankAccountController@delete');
+  Route::delete('/bankAccountsOverview', 'BankAccountController@delete');
 
-Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
+  Route::delete('/bankAccountsOverview{bank_account}', ["uses" => 'BankAccountController@delete', "as" => 'delete']);
 
-Route::post('/users', "HomeController@getUsers")->name('users');
+  Route::post('/users', "HomeController@getUsers")->name('users');
 
- Route::post('/deletedollie', "HomeController@deleteDollie")->name('dollie.delete');
+  Route::post('/deletedollie', "HomeController@deleteDollie")->name('dollie.delete');
 
-Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
+  Route::post('/payment', 'PaymentsController@prepare')->name('prepare');
 
-Route::get('/payment', [
-    'middleware' => ['auth'],
-    'uses' => 'PaymentsController@link'])->name('payment.link');
+  Route::get('/payment', [
+      'middleware' => ['auth'],
+      'uses' => 'PaymentsController@link'])->name('payment.link');
 
-Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
+  Route::post('/webhook', 'PaymentsController@webhook')->name('payment.webhook');
 
   Auth::routes();
 
-Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
+  Route::get('/newdollie', 'DolliesController@index')->name('newdollie');
 
-Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
+  Route::post('/newdollie', 'DolliesController@verifyDollie')->name('newdollie.verify');
 
-Route::post('/getgroups', 'GroupController@getGroups')->name('getgroups');
+  Route::post('/getgroups', 'GroupController@getGroups')->name('getgroups');
 
-Route::get('/groups', 'GroupController@index')->name('groups');
+  Route::get('/groups', 'GroupController@index')->name('groups');
 
-Route::post('/groups', 'GroupController@add')->name('addgroup');
+  Route::post('/groups', 'GroupController@add')->name('addgroup');
 
-Route::post('/deletegroup', 'GroupController@delete')->name('group.delete');
+  Route::post('/deletegroup', 'GroupController@delete')->name('group.delete');
 
-Route::post('/addmember', 'GroupController@addMember')->name('group.addmember');
+  Route::post('/addmember', 'GroupController@addMember')->name('group.addmember');
 
-Route::resource('bankAccounts', 'BankAccountController');
+  Route::resource('bankAccounts', 'BankAccountController');
 
-Route::post('/savedollie', 'DolliesController@saveDollie')->name('newdollie.save');
+  Route::post('/savedollie', 'DolliesController@saveDollie')->name('newdollie.save');
 
-Route::get('/accounts', 'AccountsController@index')->name('accounts');
+  Route::get('/accounts', 'AccountsController@index')->name('accounts');
 
-Route::get('events', 'EventsController@index')->name('events');
+  Route::get('events', 'EventsController@index')->name('events');
 
-Route::post('events', 'EventsController@new')->name('events');
+  Route::post('events', 'EventsController@new')->name('events');
 });
