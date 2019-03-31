@@ -79,7 +79,7 @@
                                     <a class="dropdown-item" href="{{ route('events', app()->getLocale()) }}">
                                             {{ __('Scheduled Dollies') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('groups') }}">
+                                    <a class="dropdown-item" href="{{ route('groups', app()->getLocale()) }}">
                                         Groups
                                     </a>
 

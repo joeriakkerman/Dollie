@@ -87,7 +87,7 @@
                         function copyLink(id){
                             var tempInput = document.createElement("input");
                             tempInput.style = "position: absolute; left: -1000px; top: -1000px";
-                            tempInput.value = "{{ route('payment.link') }}/?dollie_id=" + id;
+                            tempInput.value = "{{ route('payment.link', app()->getLocale()) }}/?dollie_id=" + id;
                             document.body.appendChild(tempInput);
                             tempInput.select();
                             document.execCommand("copy");
