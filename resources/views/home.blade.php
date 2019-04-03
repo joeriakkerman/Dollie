@@ -35,28 +35,28 @@
                         @foreach($dollies as $dollie)
                         <?php if(empty($_POST["search"]) || (!empty($_POST['search']) && $dollie->searchRelevant($_POST["search"]))){?>
                             <style>
-                                .clickable-row:hover {
+                                .clickable-row2:hover {
                                     background-color: #d8d8d8;
                                 }
                             </style>
-                            <tr id="{{ $dollie->id }}" class="clickable-row">
+                            <tr class="clickable-row2">
                                 <form id="form{{ $dollie->id }}" action="{{ route('dollie.show', app()->getLocale()) }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="dollie_id" value="{{ $dollie->id }}">
                                 </form>
-                                <td>{{ $dollie->name }}</td>
-                                <td>{{ $dollie->description }}</td>
+                                <td id="{{ $dollie->id }}" class="clickable-row">{{ $dollie->name }}</td>
+                                <td id="{{ $dollie->id }}" class="clickable-row">{{ $dollie->description }}</td>
                                 @if($filter == "incoming")
                                     <td>{{ $dollie->user->name }}</td>
                                 @endif
-                                <td>{{ $dollie->currency }}</td>
-                                <td>{{ $dollie->amount }}</td>
-                                <td><?php $date = new DateTime($dollie->dollie_date); echo $date->format("d-m-Y"); ?></td>
+                                <td id="{{ $dollie->id }}" class="clickable-row">{{ $dollie->currency }}</td>
+                                <td id="{{ $dollie->id }}" class="clickable-row">{{ $dollie->amount }}</td>
+                                <td id="{{ $dollie->id }}" class="clickable-row"><?php $date = new DateTime($dollie->dollie_date); echo $date->format("d-m-Y"); ?></td>
                                 @if($filter == "incoming")
                                     @foreach($dollie->payments as $payment)
                                         @if($payment->payer_id == Illuminate\Support\Facades\Auth::user()->id)
                                             @if($payment->payed)
-                                                <td>{{ __('Paid') }}</td>
+                                                <td id="{{ $dollie->id }}" class="clickable-row">{{ __('Paid') }}</td>
                                             @else
                                                 <td>
                                                     <form method="POST" action="{{ route('prepare', app()->getLocale()) }}">
